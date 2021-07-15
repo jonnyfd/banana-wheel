@@ -8,7 +8,7 @@ num_players = 2
 # list of clients
 sock_list = list()
 
-# socket throat clearing jargon, sets server to listen for connections on port 6699 via TCP and opens a "stream" of bytes
+# specifies IPv4 over TCP
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(("0.0.0.0", 6699))
 s.listen(num_players)
