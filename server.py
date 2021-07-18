@@ -10,6 +10,12 @@ class Player():
         self.name = name
         self.isjudge = isjudge
 
+    def send(self, message: str):
+        self.socket.send(bytes(message, "utf-8"))
+
+    def broadcast(self, player_list, message):
+        for player in player_list:
+            player.send(message)
 
 def valid_name(name: str, player_list: list) -> bool:
 
@@ -81,20 +87,20 @@ def select_judge(player_list):
 
     # randomly select judge
     judge = random.choice(player_list)
-
+    
     # reset previous judge
     for player in player_list:
-        player.isJudge = False
+        player.isjudge = False
 
     # set new judge and return
-    judge.isJudge = True
+    judge.isjudge = True
     return judge
 
 
 # keep track of current round number, for kicks
 round_number = 0
 
-while True:
+while round_number == 0:
 
     # 1. select judge
     round_number += 1
@@ -111,6 +117,7 @@ while True:
     print("All players are ready")
 
     # 2. tell everyone who the judge is
+    Player.broadcast(player, player_list, str(judge.name) + " is the judge. They will make the first prompt")
 
     # 3. have judge submit a new prompt
     # how do we know where the "blanks" are?

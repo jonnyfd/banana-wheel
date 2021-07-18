@@ -12,8 +12,11 @@ name = str(sys.argv[1])
 s.send(bytes(name, "utf-8"))
 shortly = s.recv(1024)
 print(shortly.decode("utf-8"))
+whoisjudge = s.recv(1024)
+print(whoisjudge.decode("utf-8"))
 while True:
 	pass
+
 
 
 
