@@ -27,9 +27,12 @@ while curr_players < num_players:
 		sock_list.append(clientsocket)
 		curr_players += 1
 		print("New client")
+		clientsocket.send(bytes("Welcome to banana wheel.", "utf-8"))
 	# if not new client, this means that an old client is sending a message. print it.
 	else:
-		print(active_socket.recv())
-
+		who = active_socket.recv(1024)
+		# makes it personal
+		active_socket.send(bytes("The game will start shortly " + str(who.decode("utf-8")) + ".", "utf-8"))
 # lets go
 print("All players are ready")
+
