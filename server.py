@@ -1,13 +1,14 @@
-# import socket and select modules 
+# import socket, select, random modules
 import socket
 import select
-
+import random
 
 class Player():
 
-    def __init__(self, sock: socket.socket, name: str):
+    def __init__(self, sock: socket.socket, name: str, isjudge: bool):
         self.socket = sock
         self.name = name
+        self.isjudge = isjudge
 
 
 def valid_name(name: str, player_list: list) -> bool:
@@ -65,7 +66,7 @@ while curr_players < num_players:
             continue
 
         sock_list.append(clientsocket)
-        player_list.append(Player(clientsocket, name))
+        player_list.append(Player(clientsocket, name, 0))
         curr_players += 1
         clientsocket.send(bytes("The game will start shortly.", "utf-8"))
         print(f"'{name}' joined the game.")
@@ -76,5 +77,13 @@ while curr_players < num_players:
          print(msg)
 
 # lets go
+(random.choice(player_list)).isjudge = 1
+for Player in player_list:
+    print( Player.name, Player.isjudge, sep =' ' )
+for Player in player_list:
+    if Player.isjudge == True:
+        print(f"{Player.name} is the judge. They will make the first prompt.")
+    else:
+        continue
 print("All players are ready")
 
