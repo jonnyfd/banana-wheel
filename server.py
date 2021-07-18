@@ -66,7 +66,7 @@ while curr_players < num_players:
             continue
 
         sock_list.append(clientsocket)
-        player_list.append(Player(clientsocket, name, 0))
+        player_list.append(Player(clientsocket, name, False))
         curr_players += 1
         clientsocket.send(bytes("The game will start shortly.", "utf-8"))
         print(f"'{name}' joined the game.")
@@ -76,14 +76,55 @@ while curr_players < num_players:
          msg = active_socket.recv(1024)
          print(msg)
 
-# lets go
-(random.choice(player_list)).isjudge = 1
-for Player in player_list:
-    print( Player.name, Player.isjudge, sep =' ' )
-for Player in player_list:
-    if Player.isjudge == True:
-        print(f"{Player.name} is the judge. They will make the first prompt.")
-    else:
-        continue
-print("All players are ready")
+
+def select_judge(player_list):
+
+    # randomly select judge
+    judge = random.choice(player_list)
+
+    # reset previous judge
+    for player in player_list:
+        player.isJudge = False
+
+    # set new judge and return
+    judge.isJudge = True
+    return judge
+
+
+# keep track of current round number, for kicks
+round_number = 0
+
+while True:
+
+    # 1. select judge
+    round_number += 1
+    judge = select_judge(player_list)
+
+    # lets go
+    for player in player_list:
+        print( player.name, player.isjudge, sep =' ' )
+    for player in player_list:
+        if player.isjudge == True:
+            print(f"{player.name} is the judge. They will make the first prompt.")
+        else:
+            continue
+    print("All players are ready")
+
+    # 2. tell everyone who the judge is
+
+    # 3. have judge submit a new prompt
+    # how do we know where the "blanks" are?
+    # could treat '_' as the blanks
+
+    # 4. broadcast the new prompt
+
+    # 5. wait for all non-judge players to submit their responses
+
+    # 6. broadcast when all submissions have been received
+
+    # 7. display submissions to judge, have judge select
+
+    # 8. announce winner
+
+    # 9. next round?
 
