@@ -66,7 +66,7 @@ while curr_players < num_players:
             continue
 
         sock_list.append(clientsocket)
-        player_list.append(Player(clientsocket, name, 0))
+        player_list.append(Player(clientsocket, name, False))
         curr_players += 1
         clientsocket.send(bytes("The game will start shortly.", "utf-8"))
         print(f"'{name}' joined the game.")
@@ -77,12 +77,12 @@ while curr_players < num_players:
          print(msg)
 
 # lets go
-(random.choice(player_list)).isjudge = 1
-for Player in player_list:
-    print( Player.name, Player.isjudge, sep =' ' )
-for Player in player_list:
-    if Player.isjudge == True:
-        print(f"{Player.name} is the judge. They will make the first prompt.")
+(random.choice(player_list)).isjudge = True
+for player in player_list:
+    print( player.name, player.isjudge, sep =' ' )
+for player in player_list:
+    if player.isjudge == True:
+        print(f"{player.name} is the judge. They will make the first prompt.")
     else:
         continue
 print("All players are ready")
