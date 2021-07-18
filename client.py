@@ -14,6 +14,12 @@ shortly = s.recv(1024)
 print(shortly.decode("utf-8"))
 whoisjudge = s.recv(1024)
 print(whoisjudge.decode("utf-8"))
+poke = s.recv(1024)
+if name in str(whoisjudge.decode("utf-8")):
+	print(poke.decode("utf-8"))
+	prompt = input("Enter prompt, make sure to include a '_': \n")
+	print(f"Sending prompt to server...")
+	s.send(bytes(prompt, "utf-8"))
 while True:
 	pass
 

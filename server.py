@@ -120,10 +120,22 @@ while round_number == 0:
     Player.broadcast(player, player_list, str(judge.name) + " is the judge. They will make the first prompt")
 
     # 3. have judge submit a new prompt
+    for player in player_list:
+        if player.isjudge == True:
+            player.send("...")
+        else: 
+            continue
+    prompt = s.recv(1024)
     # how do we know where the "blanks" are?
     # could treat '_' as the blanks
 
     # 4. broadcast the new prompt
+    prompt = s.recv(1024)
+    for player in player_list:
+        if player.isjudge == False:
+            player.send(str(prompt.decode("utf-8")))
+        else: 
+            continue
 
     # 5. wait for all non-judge players to submit their responses
 
