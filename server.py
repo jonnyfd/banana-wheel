@@ -123,17 +123,21 @@ while round_number == 0:
     for player in player_list:
         if player.isjudge == True:
             player.send("...")
+            active_socket = player
         else: 
             continue
-    prompt = s.recv(1024)
     # how do we know where the "blanks" are?
     # could treat '_' as the blanks
 
     # 4. broadcast the new prompt
-    prompt = s.recv(1024)
+    
+    prompt = active_socket.socket.recv(1024) 
+    print(f"{prompt.decode()}")   
+
+
     for player in player_list:
         if player.isjudge == False:
-            player.send(str(prompt.decode("utf-8")))
+            player.socket.send(prompt)
         else: 
             continue
 

@@ -20,6 +20,7 @@ if name in str(whoisjudge.decode("utf-8")):
 	prompt = input("Enter prompt, make sure to include a '_': \n")
 	print(f"Sending prompt to server...")
 	s.send(bytes(prompt, "utf-8"))
+print(poke.decode("utf-8"))
 while True:
 	pass
 
