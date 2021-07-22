@@ -31,10 +31,10 @@ if response != "The game will start shortly.":
     quit()
 
 # connection succeeded, wait for game to start
-status = s.recv(1024).decode("utf-8")
-print(status)
-if status != "Game starting...":
-    quit()
+#status = s.recv(1024).decode("utf-8")
+#print(status)
+#if status != "Game starting...":
+ #   quit()
 
 round_number = 0
 wins = 0
