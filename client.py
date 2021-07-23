@@ -31,10 +31,10 @@ if response != "The game will start shortly.":
     quit()
 
 # connection succeeded, wait for game to start
-#status = s.recv(1024).decode("utf-8")
-#print(status)
-#if status != "Game starting...":
- #   quit()
+status = s.recv(1024).decode("utf-8")
+print(status)
+if status != "Game starting...":
+    quit()
 
 round_number = 0
 wins = 0
@@ -56,7 +56,7 @@ while True:
 
         # receive all prompt responses from server
         print("Waiting for responses to come in...")
-        responses = s.recv(1024)
+        responses = s.recv(1024).decode("utf-8")
         print(f"The responses are:\n{responses}")
 
         # client submits winning response number

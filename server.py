@@ -23,10 +23,11 @@ class Player():
         return self.socket.recv(1024).decode("utf-8")
 
 
-def broadcast(player_list, message):
+def broadcast(player_list, message, exclude=None):
     """Sends a message to all players"""
     for player in player_list:
-        player.send(message)
+        if player is not exclude:
+            player.send(message)
 
 
 def get_player_with_socket(player_list: list, sock: socket.socket):
@@ -113,10 +114,13 @@ def select_judge(player_list):
     return judge
 
 
+# everyone is here, start game
+broadcast(player_list, "Game starting...")
+
 # keep track of current round number, for kicks
 round_number = 0
 
-while round_number == 0:
+while True:
 
     # 1. select judge
     round_number += 1
@@ -133,21 +137,21 @@ while round_number == 0:
     print(f"The prompt is:\n{prompt}")
 
     # 4. broadcast the new prompt
-    broadcast(player_list, prompt)
+    broadcast(player_list, prompt, exclude=judge)
 
     # 5. wait for all non-judge players to submit their responses
-    received = num_players
     responses = []
-    while received < num_players:
-        active_socket = select(
-                [player.socket for player in player_list], [], []
+    waiting = [player.socket for player in player_list if player is not judge]
+    while waiting != []:
+        active_socket = select.select(
+                 waiting, [], []
         )[0][0]
         player = get_player_with_socket(player_list, active_socket)
         curr = player.receive()
-        received += 1
 
         # keep track of number, response, and player
-        responses.append((received, curr, player.name))
+        responses.append((len(waiting), curr, player.name))
+        waiting.remove(active_socket)
 
     # shuffle responses
     random.shuffle(responses)
@@ -157,7 +161,7 @@ while round_number == 0:
     # 2 - "cats"
     # 3 - "birds"
     # etc
-    response_str = "\n".join(response[0] + " - " + response[1] for response in responses)
+    response_str = "\n".join(str(response[0]) + " - " + response[1] for response in responses)
 
     # 6. display submissions to everyone
     broadcast(player_list, response_str)
